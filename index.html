@@ -2,10 +2,12 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Planificateur de Voyage</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
   <header>
@@ -18,24 +20,25 @@
       <button data-section="logements">Logements</button>
       <button data-section="budget">Budget</button>
       <button data-section="infos">Infos utiles</button>
-      <button data-section="calendrier">Calendrier</button>
+      <button data-section="calendrier">Planning</button>
     </nav>
   </header>
 
-  <main id="mainContainer">
-    <!-- Sections dynamiques injectées ici -->
+  <main id="mainContainer"></main>
+
+  <!-- Carte -->
+  <div id="map" style="height: 400px; display: none;"></div>
+
+  <!-- Sauvegarde / chargement -->
   <section>
-  <h2>💾 Sauvegarde / Chargement</h2>
-  <button id="saveAllBtn">💾 Sauvegarder (JSON)</button>
-  <input type="file" id="loadAllBtn" accept=".json" />
+    <h2>💾 Sauvegarde / Chargement</h2>
+    <button id="saveAllBtn">💾 Sauvegarder (JSON)</button>
+    <input type="file" id="loadAllBtn" accept=".json" />
   </section>
-  </main>
 
-  <div id="map" style="height:400px; display:none;"></div>
-
-  <!-- Scripts -->
-  <script src="script.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Leaflet & JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
