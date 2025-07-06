@@ -13,7 +13,7 @@
   <header>
     <h1>🧳 Planificateur de Voyage</h1>
     <nav>
-      <button data-section="overview">Vue d'ensemble</button>
+      <button data-section="overview" class="active">Vue d'ensemble</button>
       <button data-section="voyageurs">Voyageurs</button>
       <button data-section="programme">Programme</button>
       <button data-section="activites">Activités</button>
@@ -26,17 +26,14 @@
 
   <main id="mainContainer"></main>
 
-  <!-- Carte -->
-  <div id="map" style="height: 400px; display: none;"></div>
+  <footer>
+    <section>
+      <h2>💾 Sauvegarde / Chargement</h2>
+      <button id="saveAllBtn">💾 Exporter en JSON</button>
+      <input type="file" id="loadAllBtn" accept=".json" />
+    </section>
+  </footer>
 
-  <!-- Sauvegarde / chargement -->
-  <section>
-    <h2>💾 Sauvegarde / Chargement</h2>
-    <button id="saveAllBtn">💾 Sauvegarder (JSON)</button>
-    <input type="file" id="loadAllBtn" accept=".json" />
-  </section>
-
-  <!-- Leaflet & JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="script.js"></script>

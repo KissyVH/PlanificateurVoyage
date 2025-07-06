@@ -1,8 +1,8 @@
-// =======================
+// ==========================
 // PLANIFICATEUR DE VOYAGE – SCRIPT FINAL SYNCHRONISÉ
-// =======================
+// ==========================
 
-// 🌍 AppData centrale
+// 🌍 Données centrales (structure mémoire)
 let appData = {
   overview: {},
   voyageurs: [],
@@ -13,7 +13,7 @@ let appData = {
   infos: []
 };
 
-// 🌍 Leaflet Map
+// 🌍 Carte Leaflet
 let map;
 
 function initLeafletMap() {
@@ -32,7 +32,7 @@ function ajouterMarqueur(lat, lon, label) {
   }
 }
 
-// 🚀 Navigation
+// 🚀 Navigation principale
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("mainContainer");
   const buttons = document.querySelectorAll("nav button");
@@ -49,11 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("saveAllBtn").addEventListener("click", saveAllData);
   document.getElementById("loadAllBtn").addEventListener("change", loadAllData);
 
-  loadFromLocalStorage();
+  loadFromLocalStorage(); // 🔁 Restaurer si déjà enregistré
   loadSection("overview", container);
 });
 
-// 🔁 Load Section
+// 🔀 Charge la bonne section
 function loadSection(section, container) {
   container.innerHTML = "";
   switch (section) {
@@ -72,14 +72,19 @@ function loadOverview(container) {
   container.innerHTML = `
     <section>
       <h2>Vue d'ensemble</h2>
+
       <label>Destination :</label>
       <input type="text" placeholder="Corée du Sud" value="${appData.overview['Corée du Sud'] || ''}" />
+
       <label>Date de début :</label>
       <input type="date" value="${appData.overview['Date de début'] || ''}" />
+
       <label>Date de fin :</label>
       <input type="date" value="${appData.overview['Date de fin'] || ''}" />
+
       <label>Nombre de voyageurs :</label>
       <input type="number" min="1" value="${appData.overview['Nombre de voyageurs'] || 1}" />
+
       <div id="map" style="height: 400px; margin-top: 1rem;"></div>
     </section>
   `;
@@ -103,7 +108,7 @@ function loadVoyageurs(container) {
     addTravelerForm();
   });
 
-  // Injecter voyageurs depuis appData
+  // 🔁 Injection depuis appData
   if (appData.voyageurs && appData.voyageurs.length > 0) {
     appData.voyageurs.forEach(v => addTravelerForm(v));
   }
@@ -138,9 +143,11 @@ function addTravelerForm(data = {}) {
 
   div.querySelector(".removeTraveler").addEventListener("click", () => {
     list.removeChild(div);
+    saveToLocalStorage();
   });
 
   list.appendChild(div);
+  saveToLocalStorage();
 }
 function loadProgramme(container) {
   container.innerHTML = `
@@ -155,11 +162,9 @@ function loadProgramme(container) {
     addDayBlock();
   });
 
-  // Injection des jours depuis appData
+  // 🔁 Injecte les jours depuis appData
   if (appData.programme && appData.programme.length > 0) {
-    appData.programme.forEach(jour => {
-      addDayBlock(jour);
-    });
+    appData.programme.forEach(jour => addDayBlock(jour));
   }
 }
 
@@ -176,6 +181,7 @@ function addDayBlock(data = {}) {
     <h3>Jour ${dayCounter}</h3>
     <label>Date :</label>
     <input type="date" class="day-date" value="${data.date || ''}" />
+
     <div class="slots"></div>
     <button class="addSlotBtn">➕ Ajouter une plage horaire</button>
     <button class="removeDayBtn">🗑️ Supprimer ce jour</button>
@@ -187,14 +193,17 @@ function addDayBlock(data = {}) {
 
   block.querySelector(".removeDayBtn").addEventListener("click", () => {
     container.removeChild(block);
+    saveToLocalStorage();
   });
 
   container.appendChild(block);
 
-  // Injection des plages horaires
+  // 🔁 Injecte les créneaux si présents
   if (data.slots && Array.isArray(data.slots)) {
     data.slots.forEach(slot => addTimeSlot(block.querySelector(".slots"), slot));
   }
+
+  saveToLocalStorage();
 }
 
 function addTimeSlot(container, data = {}) {
@@ -222,66 +231,45 @@ function addTimeSlot(container, data = {}) {
     <button class="removeSlotBtn">❌</button>
   `;
 
-  // Pré-sélectionner le type
+  // Pré-sélectionne le type s'il est défini
   if (data.type) {
     slot.querySelector("select").value = data.type;
   }
 
   slot.querySelector(".removeSlotBtn").addEventListener("click", () => {
     container.removeChild(slot);
+    saveToLocalStorage();
   });
 
   container.appendChild(slot);
+  saveToLocalStorage();
 }
 function loadActivites(container) {
   container.innerHTML = `
     <section>
       <h2>🎯 Activités prévues</h2>
-  const select = document.getElementById("filtreVoyageur");
-  document.querySelectorAll(".traveler-block").forEach(block => {
-    const prenom = block.querySelector(".prenom")?.value || "";
-    const nom = block.querySelector(".nom")?.value || "";
-    const fullName = `${prenom} ${nom}`.trim();
-
-    if (fullName) {
-      const opt = document.createElement("option");
-      opt.value = fullName;
-      opt.textContent = fullName;
-      select.appendChild(opt);
-    }
-  });
-
-  select.addEventListener("change", () => {
-    filterActivitiesByVoyageur(select.value);
-  });
-function filterActivitiesByVoyageur(name) {
-  const blocs = document.querySelectorAll(".activity-block");
-
-  blocs.forEach(block => {
-    if (name === "tous") {
-      block.style.display = "block";
-    } else {
-      const checkboxes = block.querySelectorAll(".participant-list input[type='checkbox']");
-      const match = [...checkboxes].some(c => c.value === name && c.checked);
-      block.style.display = match ? "block" : "none";
-    }
-  });
-}
 
       <label>👤 Filtrer par voyageur :</label>
       <select id="filtreVoyageur">
         <option value="tous">— Tous —</option>
       </select>
+
       <button id="addActivity">+ Ajouter une activité</button>
       <div id="activityList"></div>
     </section>
   `;
 
+  remplirSelectVoyageur("filtreVoyageur");
+
   document.getElementById("addActivity").addEventListener("click", () => {
     addActivityForm();
   });
 
-  // 🔁 Injection automatique
+  document.getElementById("filtreVoyageur").addEventListener("change", (e) => {
+    filterActivitiesByVoyageur(e.target.value);
+  });
+
+  // 🔁 Restauration des activités
   if (appData.activites && appData.activites.length > 0) {
     appData.activites.forEach(a => addActivityForm(a));
   }
@@ -301,7 +289,7 @@ function addActivityForm(data = {}) {
     <h3>Activité ${activityCounter}</h3>
 
     <label>Nom / Description :</label>
-    <input type="text" placeholder="Ex : Balade à Bukchon Hanok Village" value="${data.nom || ''}" />
+    <input type="text" value="${data.nom || ''}" placeholder="Ex : Visite du palais Gyeongbokgung" />
 
     <label>Date :</label>
     <input type="date" value="${data.date || ''}" />
@@ -310,13 +298,13 @@ function addActivityForm(data = {}) {
     <input type="time" value="${data.heure || ''}" />
 
     <label>Durée (heures) :</label>
-    <input type="number" min="0" step="0.5" value="${data.duree || ''}" />
+    <input type="number" step="0.5" value="${data.duree || ''}" />
 
     <label>Prix (€) :</label>
-    <input type="number" min="0" step="0.01" value="${data.prix || ''}" />
+    <input type="number" step="0.01" value="${data.prix || ''}" />
 
     <label>Infos utiles :</label>
-    <textarea placeholder="Lieu, point de rendez-vous, tenue...">${data.infos || ''}</textarea>
+    <textarea>${data.infos || ''}</textarea>
 
     <label>Participants :</label>
     <div class="participant-list"></div>
@@ -324,13 +312,9 @@ function addActivityForm(data = {}) {
     <button class="removeActivityBtn">🗑️ Supprimer cette activité</button>
   `;
 
-  block.querySelector(".removeActivityBtn").addEventListener("click", () => {
-    container.removeChild(block);
-  });
-
-  // Participants = voyageurs existants
   const participantList = block.querySelector(".participant-list");
   const voyageurs = document.querySelectorAll(".traveler-block");
+
   voyageurs.forEach(voy => {
     const prenom = voy.querySelector(".prenom")?.value || "";
     const nom = voy.querySelector(".nom")?.value || "";
@@ -341,7 +325,6 @@ function addActivityForm(data = {}) {
     checkbox.type = "checkbox";
     checkbox.value = fullName;
 
-    // Si chargement automatique : cocher
     if (data.participants && data.participants.includes(fullName)) {
       checkbox.checked = true;
     }
@@ -351,7 +334,48 @@ function addActivityForm(data = {}) {
     participantList.appendChild(label);
   });
 
+  block.querySelector(".removeActivityBtn").addEventListener("click", () => {
+    container.removeChild(block);
+    saveToLocalStorage();
+  });
+
   container.appendChild(block);
+  saveToLocalStorage();
+}
+
+function filterActivitiesByVoyageur(name) {
+  const blocs = document.querySelectorAll(".activity-block");
+
+  blocs.forEach(block => {
+    if (name === "tous") {
+      block.style.display = "block";
+    } else {
+      const checkboxes = block.querySelectorAll(".participant-list input[type='checkbox']");
+      const match = [...checkboxes].some(c => c.value === name && c.checked);
+      block.style.display = match ? "block" : "none";
+    }
+  });
+}
+
+function remplirSelectVoyageur(selectId) {
+  const select = document.getElementById(selectId);
+  if (!select) return;
+
+  select.innerHTML = `<option value="tous">— Tous —</option>`;
+  const voyageurs = document.querySelectorAll(".traveler-block");
+
+  voyageurs.forEach(voy => {
+    const prenom = voy.querySelector(".prenom")?.value || "";
+    const nom = voy.querySelector(".nom")?.value || "";
+    const fullName = `${prenom} ${nom}`.trim();
+
+    if (fullName) {
+      const opt = document.createElement("option");
+      opt.value = fullName;
+      opt.textContent = fullName;
+      select.appendChild(opt);
+    }
+  });
 }
 function loadLogements(container) {
   container.innerHTML = `
@@ -366,7 +390,7 @@ function loadLogements(container) {
     addLogementForm();
   });
 
-  // 🔁 Injection des logements depuis appData
+  // 🔁 Restaurer depuis appData
   if (appData.logements && appData.logements.length > 0) {
     appData.logements.forEach(logement => addLogementForm(logement));
   }
@@ -389,7 +413,7 @@ function addLogementForm(data = {}) {
     <input type="text" value="${data.nom || ''}" />
 
     <label>Type :</label>
-    <input type="text" value="${data.type || ''}" placeholder="Hôtel, Airbnb, etc." />
+    <input type="text" placeholder="Hôtel, Airbnb…" value="${data.type || ''}" />
 
     <label>Date d'arrivée :</label>
     <input type="date" value="${data.arrivee || ''}" />
@@ -418,14 +442,16 @@ function addLogementForm(data = {}) {
     <button class="removeLogementBtn">🗑️ Supprimer ce logement</button>
   `;
 
-  // Supprimer logement
+  // Supprimer le logement
   block.querySelector(".removeLogementBtn").addEventListener("click", () => {
     container.removeChild(block);
+    saveToLocalStorage();
   });
 
-  // Ajouter chambres
+  // Gestion chambres
   const chambreList = block.querySelector(".chambres-list");
-  block.querySelector(".addChambreBtn").addEventListener("click", () => {
+  const addChambreBtn = block.querySelector(".addChambreBtn");
+  addChambreBtn.addEventListener("click", () => {
     addChambre(chambreList);
   });
 
@@ -434,7 +460,7 @@ function addLogementForm(data = {}) {
     data.chambres.forEach(c => addChambre(chambreList, c));
   }
 
-  // Gestion fichier
+  // Upload fichier de confirmation
   const fileInput = block.querySelector(".fileInput");
   const downloadBtn = block.querySelector(".downloadBtn");
 
@@ -453,6 +479,7 @@ function addLogementForm(data = {}) {
   });
 
   container.appendChild(block);
+  saveToLocalStorage();
 }
 
 function addChambre(container, data = {}) {
@@ -461,27 +488,28 @@ function addChambre(container, data = {}) {
 
   div.innerHTML = `
     <label>Type de chambre :</label>
-    <input type="text" value="${data.type || ''}" placeholder="Double, twin, suite..." />
+    <input type="text" value="${data.type || ''}" placeholder="Double, Twin, Suite…" />
 
     <label>Nombre :</label>
     <input type="number" min="1" value="${data.nombre || 1}" />
 
     <label>Prix par nuit (€) :</label>
-    <input type="number" min="0" step="0.01" value="${data.prixNuit || ''}" />
+    <input type="number" step="0.01" value="${data.prixNuit || ''}" />
 
     <label>Prix total (€) :</label>
-    <input type="number" min="0" step="0.01" value="${data.prixTotal || ''}" />
+    <input type="number" step="0.01" value="${data.prixTotal || ''}" />
 
     <button class="removeChambreBtn">❌ Supprimer cette chambre</button>
   `;
 
   div.querySelector(".removeChambreBtn").addEventListener("click", () => {
     container.removeChild(div);
+    saveToLocalStorage();
   });
 
   container.appendChild(div);
+  saveToLocalStorage();
 }
-// === BUDGET ===
 function loadBudget(container) {
   container.innerHTML = `
     <section>
@@ -504,8 +532,7 @@ function loadBudget(container) {
 
   document.getElementById("conversionRate").addEventListener("input", updateBudgetTotal);
 
-  // Injection
-  if (appData.budget && appData.budget.length > 0) {
+  if (appData.budget) {
     appData.budget.forEach(p => addPosteBudget(p));
   }
 }
@@ -530,18 +557,16 @@ function addPosteBudget(data = {}) {
     </select>
 
     <label>Montant total (€) :</label>
-    <input type="number" class="montantPoste" min="0" step="0.01" value="${data.montant || ''}" />
+    <input type="number" class="montantPoste" value="${data.montant || ''}" />
 
     <label>Nombre de participants :</label>
-    <input type="number" class="participantsPoste" min="1" value="${data.participants || 1}" />
+    <input type="number" class="participantsPoste" value="${data.participants || 1}" />
 
     <p class="parPersonne">Prix par personne : –</p>
     <button class="removePosteBtn">🗑️ Supprimer</button>
   `;
 
-  if (data.categorie) {
-    block.querySelector(".categoriePoste").value = data.categorie;
-  }
+  block.querySelector(".categoriePoste").value = data.categorie || "transport";
 
   const montantInput = block.querySelector(".montantPoste");
   const participantsInput = block.querySelector(".participantsPoste");
@@ -560,29 +585,26 @@ function addPosteBudget(data = {}) {
   block.querySelector(".removePosteBtn").addEventListener("click", () => {
     container.removeChild(block);
     updateBudgetTotal();
+    saveToLocalStorage();
   });
 
   container.appendChild(block);
   updateParPersonne();
+  saveToLocalStorage();
 }
 
 function updateBudgetTotal() {
   const montantInputs = document.querySelectorAll(".montantPoste");
   let total = 0;
-  montantInputs.forEach(input => {
-    total += parseFloat(input.value) || 0;
-  });
+  montantInputs.forEach(input => total += parseFloat(input.value) || 0);
 
   const taux = parseFloat(document.getElementById("conversionRate").value) || 0;
   const totalConverted = (total * taux).toFixed(0);
 
   document.getElementById("budgetTotal").innerHTML = `
-    <strong>${total.toFixed(2)} €</strong><br/>
-    ~ ${totalConverted} KRW
+    <strong>${total.toFixed(2)} €</strong><br/>~ ${totalConverted} KRW
   `;
 }
-
-// === INFOS UTILES ===
 function loadInfos(container) {
   container.innerHTML = `
     <section>
@@ -603,27 +625,28 @@ function loadInfos(container) {
 
 function addInfoNote(data = {}) {
   const container = document.getElementById("infosContainer");
+
   const block = document.createElement("div");
   block.className = "info-note";
 
   block.innerHTML = `
     <label>Titre :</label>
-    <input type="text" value="${data.titre || ''}" placeholder="Ex : Urgences, Check-list..." />
+    <input type="text" value="${data.titre || ''}" />
 
     <label>Contenu :</label>
-    <textarea placeholder="Ex : 112 (urgence), assurance, etc.">${data.texte || ''}</textarea>
+    <textarea>${data.texte || ''}</textarea>
 
     <button class="removeNoteBtn">🗑️ Supprimer</button>
   `;
 
   block.querySelector(".removeNoteBtn").addEventListener("click", () => {
     container.removeChild(block);
+    saveToLocalStorage();
   });
 
   container.appendChild(block);
+  saveToLocalStorage();
 }
-
-// === PLANNING VISUEL ===
 function loadCalendrier(container) {
   container.innerHTML = `
     <section>
@@ -642,21 +665,16 @@ function loadCalendrier(container) {
   `;
 
   remplirSelectVoyageur("filtrePlanning");
+
   document.getElementById("refreshPlanningBtn").addEventListener("click", generatePlanningTable);
   document.getElementById("exportPlanningPdfBtn").addEventListener("click", exportPlanningToPDF);
 }
 
 function generatePlanningTable() {
-  const tableContainer = document.getElementById("planningTable");
-  tableContainer.innerHTML = "";
-
   const filtre = document.getElementById("filtrePlanning")?.value || "tous";
   const jours = document.querySelectorAll(".day-block");
-
-  if (jours.length === 0) {
-    tableContainer.innerHTML = "<p>Aucun jour n’a encore été ajouté.</p>";
-    return;
-  }
+  const tableContainer = document.getElementById("planningTable");
+  tableContainer.innerHTML = "";
 
   jours.forEach((jour, i) => {
     const date = jour.querySelector(".day-date")?.value || `Jour ${i + 1}`;
@@ -673,27 +691,25 @@ function generatePlanningTable() {
     `;
 
     const tbody = table.querySelector("tbody");
-    let auMoinsUnSlot = false;
+    let auMoinsUn = false;
 
     slots.forEach(slot => {
       const heure = slot.querySelectorAll('input[type="time"]')[0]?.value || "";
       const type = slot.querySelector("select")?.value || "";
       const detail = slot.querySelector('input[type="text"]')?.value || "";
 
-      // Appliquer filtre
       if (filtre !== "tous" && type === "activité") {
         const participants = getParticipantsFromActivity(detail);
         if (!participants.includes(filtre)) return;
       }
 
-      auMoinsUnSlot = true;
-
+      auMoinsUn = true;
       const row = document.createElement("tr");
       row.innerHTML = `<td>${heure}</td><td>${iconeType(type)} ${capitalize(type)}</td><td>${detail}</td>`;
       tbody.appendChild(row);
     });
 
-    if (auMoinsUnSlot) {
+    if (auMoinsUn) {
       block.appendChild(table);
       tableContainer.appendChild(block);
     }
@@ -709,6 +725,11 @@ function iconeType(type) {
     default: return "❓";
   }
 }
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 function getParticipantsFromActivity(nomActivite) {
   const matched = [];
   document.querySelectorAll(".activity-block").forEach(block => {
@@ -723,31 +744,6 @@ function getParticipantsFromActivity(nomActivite) {
   return matched;
 }
 
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-function remplirSelectVoyageur(selectId) {
-  const select = document.getElementById(selectId);
-  if (!select) return;
-
-  select.innerHTML = `<option value="tous">— Tous —</option>`;
-  const voyageurs = document.querySelectorAll(".traveler-block");
-
-  voyageurs.forEach(voy => {
-    const prenom = voy.querySelector(".prenom")?.value || "";
-    const nom = voy.querySelector(".nom")?.value || "";
-    const fullName = `${prenom} ${nom}`.trim();
-
-    if (fullName) {
-      const opt = document.createElement("option");
-      opt.value = fullName;
-      opt.textContent = fullName;
-      select.appendChild(opt);
-    }
-  });
-}
-
-// === EXPORT PDF
 async function exportPlanningToPDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
@@ -755,7 +751,7 @@ async function exportPlanningToPDF() {
 
   const jours = document.querySelectorAll(".planning-day");
   if (jours.length === 0) {
-    alert("Clique sur ‘Mettre à jour le planning’ d'abord.");
+    alert("Clique d'abord sur ‘Mettre à jour le planning’.");
     return;
   }
 
@@ -790,15 +786,15 @@ async function exportPlanningToPDF() {
 
   doc.save("planning-voyage.pdf");
 }
-
-// === SAUVEGARDE JSON
 function saveAllData() {
-  // Cette fonction reste identique à celle déjà fournie précédemment
-  // Elle collecte toutes les données et génère un JSON
-  // Pour ne pas dépasser la limite ici, je te renverrai la dernière version si besoin
+  const blob = new Blob([JSON.stringify(appData, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "planificateur-voyage.json";
+  a.click();
 }
 
-// === CHARGEMENT JSON
 async function loadAllData(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -806,36 +802,35 @@ async function loadAllData(e) {
   const text = await file.text();
   const json = JSON.parse(text);
   appData = json;
-
-  alert("📦 Données chargées ! Sélectionne une section pour voir les infos restaurées.");
-  const currentBtn = document.querySelector("nav button.active");
-  if (currentBtn) currentBtn.click();
+  saveToLocalStorage();
+  alert("📦 Données chargées ! Recharge la section pour les voir.");
+  const activeBtn = document.querySelector("nav button.active");
+  if (activeBtn) activeBtn.click();
 }
-// === Sauvegarde automatique dans le navigateur ===
+
+// LocalStorage auto
 function saveToLocalStorage() {
   try {
-    const json = JSON.stringify(appData);
-    localStorage.setItem("planificateur_voyage_data", json);
-    console.log("✅ Données enregistrées dans localStorage");
+    localStorage.setItem("planificateur_voyage_data", JSON.stringify(appData));
   } catch (e) {
-    console.error("❌ Erreur lors de la sauvegarde locale :", e);
+    console.warn("Erreur sauvegarde locale", e);
   }
 }
 
 function loadFromLocalStorage() {
-  const saved = localStorage.getItem("planificateur_voyage_data");
-  if (saved) {
+  const data = localStorage.getItem("planificateur_voyage_data");
+  if (data) {
     try {
-      appData = JSON.parse(saved);
-      console.log("📦 Données restaurées depuis localStorage");
+      appData = JSON.parse(data);
+      console.log("📦 Données restaurées depuis le navigateur");
     } catch (e) {
-      console.error("❌ Erreur lors du chargement localStorage :", e);
+      console.warn("Erreur de restauration", e);
     }
   }
 }
-window.addEventListener("beforeunload", () => {
-  saveAllData();
-});
-window.addEventListener("beforeunload", () => {
-  saveToLocalStorage();
-});
+
+window.addEventListener("beforeunload", saveToLocalStorage);
+
+
+
+
