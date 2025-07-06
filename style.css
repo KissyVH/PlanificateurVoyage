@@ -1,0 +1,269 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+header {
+  background-color: #1e1e1e;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+nav {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+nav button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  background: #03dac5;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+main {
+  padding: 2rem;
+}
+
+section {
+  margin-bottom: 2rem;
+  background: #1e1e1e;
+  padding: 1rem;
+  border-radius: 6px;
+}
+.traveler-block {
+  background: #2a2a2a;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+.traveler-block input {
+  margin-bottom: 0.5rem;
+}
+
+.traveler-block button {
+  align-self: flex-end;
+  background-color: #ff5252;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.day-block {
+  background-color: #2a2a2a;
+  padding: 1rem;
+  border-radius: 6px;
+  margin: 1rem 0;
+}
+
+.time-slot {
+  background: #1b1b1b;
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.time-slot select,
+.time-slot input {
+  padding: 0.4rem;
+  background-color: #292929;
+  border: none;
+  border-radius: 4px;
+  color: white;
+}
+
+.addSlotBtn, .removeDayBtn {
+  margin-top: 1rem;
+  padding: 0.4rem 1rem;
+  background: #03dac5;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.removeSlotBtn {
+  background: #ff5252;
+  color: white;
+  border: none;
+  align-self: flex-start;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.activity-block {
+  background: #2a2a2a;
+  padding: 1rem;
+  border-radius: 6px;
+  margin: 1rem 0;
+}
+
+.activity-block input,
+.activity-block textarea {
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.participant-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.participant-list label {
+  background: #3a3a3a;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.logement-block {
+  background: #2a2a2a;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 6px;
+}
+
+.logement-block input {
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.chambre-block {
+  background: #1a1a1a;
+  padding: 0.5rem;
+  margin-top: 1rem;
+  border-radius: 4px;
+}
+
+.chambres-container {
+  margin-top: 1rem;
+  background: #1e1e1e;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.chambres-container button,
+.removeLogementBtn {
+  margin-top: 0.5rem;
+  padding: 0.4rem 1rem;
+  background: #03dac5;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.removeChambreBtn {
+  margin-top: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  background: #ff5252;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.upload-section {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.upload-section input[type="file"] {
+  color: white;
+}
+.poste-budget {
+  background: #2a2a2a;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 6px;
+}
+
+.poste-budget input,
+.poste-budget select {
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.poste-budget p.parPersonne {
+  font-weight: bold;
+  color: #03dac5;
+  margin-top: 0.3rem;
+}
+
+#budgetTotal {
+  font-size: 1.3rem;
+  color: #03dac5;
+}
+.info-note {
+  background: #2a2a2a;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 6px;
+}
+
+.info-note input,
+.info-note textarea {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.info-note textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.planning-day {
+  background: #2a2a2a;
+  margin-top: 2rem;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.planning-day table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.planning-day th,
+.planning-day td {
+  border-bottom: 1px solid #444;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.planning-day th {
+  background: #1e1e1e;
+}
+
+.planning-day td {
+  background: #1a1a1a;
+}
+
+.planning-day h3 {
+  color: #03dac5;
+}
