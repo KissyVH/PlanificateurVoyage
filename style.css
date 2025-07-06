@@ -1,16 +1,22 @@
+/* === STYLE GLOBAL === */
 body {
-  font-family: 'Segoe UI', sans-serif;
   margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
   background-color: #121212;
-  color: #f1f1f1;
+  color: #f0f0f0;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4 {
+  color: #ffffff;
 }
 
 header {
-  background-color: #1e1e1e;
+  background-color: #1f1f1f;
   padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  text-align: center;
+  border-bottom: 1px solid #444;
 }
 
 nav {
@@ -18,229 +24,89 @@ nav {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  justify-content: center;
 }
 
 nav button {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 5px;
-  background: #03dac5;
-  color: black;
+  background: #03dac6;
+  color: #000;
   font-weight: bold;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+nav button:hover,
+nav button.active {
+  background: #018786;
+  color: white;
 }
 
 main {
   padding: 2rem;
+  max-width: 900px;
+  margin: auto;
 }
 
 section {
-  margin-bottom: 2rem;
-  background: #1e1e1e;
+  margin-bottom: 3rem;
+  background-color: #1e1e1e;
   padding: 1rem;
   border-radius: 6px;
-}
-.traveler-block {
-  background: #2a2a2a;
-  padding: 1rem;
-  margin: 1rem 0;
-  border-radius: 6px;
-  display: flex;
-  flex-direction: column;
+  box-shadow: 0 0 4px #000;
 }
 
-.traveler-block input {
-  margin-bottom: 0.5rem;
-}
-
-.traveler-block button {
-  align-self: flex-end;
-  background-color: #ff5252;
-  color: white;
-  font-weight: bold;
-  border: none;
-  padding: 0.4rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.day-block {
-  background-color: #2a2a2a;
-  padding: 1rem;
-  border-radius: 6px;
-  margin: 1rem 0;
-}
-
-.time-slot {
-  background: #1b1b1b;
-  margin-top: 1rem;
-  padding: 1rem;
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.time-slot select,
-.time-slot input {
-  padding: 0.4rem;
-  background-color: #292929;
-  border: none;
-  border-radius: 4px;
-  color: white;
-}
-
-.addSlotBtn, .removeDayBtn {
-  margin-top: 1rem;
-  padding: 0.4rem 1rem;
-  background: #03dac5;
-  color: black;
-  font-weight: bold;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.removeSlotBtn {
-  background: #ff5252;
-  color: white;
-  border: none;
-  align-self: flex-start;
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.activity-block {
-  background: #2a2a2a;
-  padding: 1rem;
-  border-radius: 6px;
-  margin: 1rem 0;
-}
-
-.activity-block input,
-.activity-block textarea {
-  margin-bottom: 0.5rem;
+input[type="text"],
+input[type="date"],
+input[type="time"],
+input[type="number"],
+select,
+textarea {
   width: 100%;
-}
-
-.participant-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 0.5rem;
-}
-
-.participant-list label {
-  background: #3a3a3a;
-  padding: 0.4rem 0.6rem;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.logement-block {
-  background: #2a2a2a;
-  padding: 1rem;
-  margin: 1rem 0;
-  border-radius: 6px;
-}
-
-.logement-block input {
-  margin-bottom: 0.5rem;
-  width: 100%;
-}
-
-.chambre-block {
-  background: #1a1a1a;
   padding: 0.5rem;
-  margin-top: 1rem;
+  margin: 0.3rem 0 1rem 0;
+  border: 1px solid #444;
   border-radius: 4px;
+  background: #2c2c2c;
+  color: #fff;
 }
 
-.chambres-container {
-  margin-top: 1rem;
-  background: #1e1e1e;
-  padding: 1rem;
-  border-radius: 4px;
-}
-
-.chambres-container button,
-.removeLogementBtn {
-  margin-top: 0.5rem;
-  padding: 0.4rem 1rem;
-  background: #03dac5;
-  color: black;
-  border: none;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.removeChambreBtn {
-  margin-top: 0.5rem;
-  padding: 0.3rem 0.6rem;
-  background: #ff5252;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.upload-section {
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.upload-section input[type="file"] {
-  color: white;
-}
-.poste-budget {
-  background: #2a2a2a;
-  padding: 1rem;
-  margin: 1rem 0;
-  border-radius: 6px;
-}
-
-.poste-budget input,
-.poste-budget select {
-  margin-bottom: 0.5rem;
-  width: 100%;
-}
-
-.poste-budget p.parPersonne {
-  font-weight: bold;
-  color: #03dac5;
-  margin-top: 0.3rem;
-}
-
-#budgetTotal {
-  font-size: 1.3rem;
-  color: #03dac5;
-}
-.info-note {
-  background: #2a2a2a;
-  padding: 1rem;
-  margin: 1rem 0;
-  border-radius: 6px;
-}
-
-.info-note input,
-.info-note textarea {
-  width: 100%;
-  margin-bottom: 0.5rem;
-}
-
-.info-note textarea {
-  min-height: 100px;
+textarea {
   resize: vertical;
 }
 
+label {
+  font-weight: bold;
+  display: block;
+  margin-top: 0.5rem;
+}
+
+button {
+  background: #03dac6;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-top: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #018786;
+  color: white;
+}
+
+hr {
+  border: 1px solid #333;
+  margin: 1rem 0;
+}
+
+/* === PLANNING TABLE === */
 .planning-day {
-  background: #2a2a2a;
-  margin-top: 2rem;
-  padding: 1rem;
-  border-radius: 6px;
+  margin-bottom: 2rem;
 }
 
 .planning-day table {
@@ -251,19 +117,47 @@ section {
 
 .planning-day th,
 .planning-day td {
-  border-bottom: 1px solid #444;
   padding: 0.5rem;
   text-align: left;
+  border: 1px solid #444;
 }
 
 .planning-day th {
-  background: #1e1e1e;
+  background: #333;
 }
 
-.planning-day td {
-  background: #1a1a1a;
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  button {
+    width: 100%;
+    text-align: center;
+  }
+
+  input, select, textarea {
+    font-size: 1rem;
+  }
 }
 
-.planning-day h3 {
-  color: #03dac5;
+/* === FILE UPLOAD === */
+.upload-section input[type="file"] {
+  margin-top: 0.5rem;
+}
+
+/* === ACTIVITÉS PARTICIPANTS === */
+.participant-list label {
+  display: inline-block;
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* === TABLEAU BUDGET === */
+.parPersonne {
+  font-style: italic;
+  margin-top: 0.5rem;
+  color: #ccc;
 }
