@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planificateur de Voyage</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+  <header>
+    <h1>🧳 Planificateur de Voyage</h1>
+    <nav>
+      <button data-section="overview" class="active">Vue d'ensemble</button>
+      <button data-section="voyageurs">Voyageurs</button>
+      <button data-section="programme">Programme</button>
+      <button data-section="activites">Activités</button>
+      <button data-section="logements">Logements</button>
+      <button data-section="budget">Budget</button>
+      <button data-section="infos">Infos utiles</button>
+      <button data-section="calendrier">Planning</button>
+    </nav>
+  </header>
+
+  <main id="mainContainer"></main>
+
+  <footer>
+    <section>
+      <h2>💾 Sauvegarde / Chargement</h2>
+      <button id="saveAllBtn">💾 Exporter en JSON</button>
+      <input type="file" id="loadAllBtn" accept=".json" />
+    </section>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
